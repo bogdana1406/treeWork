@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-
-
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <books>
     <book id="01" isbn="12345">
         <title>Childshood's End</title>
@@ -13,5 +11,9 @@
     <book id="03" isbn="12222">
         <title>Coves of the street</title>
         <author>Isaac</author>
+    </book>
+    <book id="05" isbn="234234">
+        <title>Lukimorie</title>
+        <author>Pushkin</author>
     </book>
 </books>
