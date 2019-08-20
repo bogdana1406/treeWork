@@ -1,9 +1,24 @@
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.List;
 import java.util.Optional;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException, TransformerException, ParserConfigurationException {
         Node<String> root = createTree();
+
+        createXMLfromTree(root);
         List<List<String>> lists = root.levelOrder(root);
         for (List<String> s: lists) {
             System.out.println(s);
@@ -32,8 +47,25 @@ public class Main {
         Node<String> node211 = node2.addChild(new Node<String>("node 22"));
         return root;
     }
-    public static <T> void printTree(Node<T> node, String appender) {
+    public static void printTree(Node<String> node, String appender) {
         System.out.println(appender + node.getData());
         node.getChildren().forEach(each ->  printTree(each, appender + appender));
+    }
+
+    public static void createXMLfromTree(Node<String> node) throws ParserConfigurationException, FileNotFoundException, TransformerException {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document document = db.newDocument();
+        Element root = document.createElement(node.getData());
+
+        document.appendChild(root);
+
+
+        DOMSource source = new DOMSource(document);
+        String outputURL = "node_edit.xml";
+        StreamResult result = new StreamResult(new FileOutputStream(outputURL));
+        TransformerFactory tf = TransformerFactory.newInstance();
+        Transformer transformer = tf.newTransformer();
+        transformer.transform(source, result);
     }
 }
